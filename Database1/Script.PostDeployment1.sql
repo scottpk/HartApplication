@@ -1,0 +1,39 @@
+﻿/*
+Post-Deployment Script Template							
+--------------------------------------------------------------------------------------
+ This file contains SQL statements that will be appended to the build script.		
+ Use SQLCMD syntax to include a file in the post-deployment script.			
+ Example:      :r .\myfile.sql								
+ Use SQLCMD syntax to reference a variable in the post-deployment script.		
+ Example:      :setvar TableName MyTable							
+               SELECT * FROM [$(TableName)]					
+--------------------------------------------------------------------------------------
+*/
+insert into dbo.InventoryItem([Description]) values('Chair'),('Desk'),('Table')
+
+;with cte as (
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Table' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Table' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair' UNION ALL
+  SELECT ID FROM dbo.InventoryItem WHERE [Description] = 'Chair'
+)
+insert into dbo.InventoryEntry([ItemId]) SELECT ID FROM cte
+
+insert into dbo.Setting([Name],[Value]) VALUES('Timeout','30');
+insert into dbo.Setting([Name],[Value]) VALUES('TimeoutMessage','Timeout Reached');

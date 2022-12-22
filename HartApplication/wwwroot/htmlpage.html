@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <title>Scott P Karbon</title>
+    <style>
+        thead {
+            font-weight: bold;
+            font-variant-caps: small-caps;
+            color: blue;
+            border-width: 1px;
+            border-style: solid;
+            background-color: lightblue;
+        }
+
+        table {
+            border-width: 2px;
+            border-style: solid;
+        }
+    </style>
+</head>
+<script>
+var app = angular.module('myApp', []);
+app.controller('getInventoryCtrl', function ($scope, $http) {
+        $http.get("Inventory/GetInventory")
+            .then(function (response) {
+                $scope.inv = response.data;
+            });
+});
+
+
+app.controller('timerCtrl', function ($scope, $http, $interval) {
+        $http.get("Settings/GetTimeout")
+            .then(function (response) {
+                $scope.timeLeft = response.data;
+
+                interval = $interval(function () {
+                    if ($scope.timeLeft > 0) {
+                        $scope.timeLeft--;
+                    }
+                    else {
+                        $interval.cancel(interval);
+                        $http.get("Settings/GetTimeoutMessage")
+                            .then(function (response) {
+                                $scope.timeLeft = response.data;
+                            });
+                    }
+                }, 1000);
+            });
+});
+</script>
+<body>
+    <h1>Scott P Karbon</h1>
+    <div ng-app="myApp">
+        <div ng-controller="getInventoryCtrl">
+            The following is in inventory:
+            <table>
+                <thead><tr><td>Description</td><td>Count</td></tr></thead>
+                <tr ng-repeat="x in inv">
+                    <td>{{ x.description }}</td>
+                    <td>{{ x.count }}</td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+        <div ng-controller="timerCtrl">
+            This will show a message after the countdown.
+            <table>
+                <thead>
+                    <tr><td>Countdown</td></tr>
+                </thead>
+                <tr><td>{{timeLeft}}</td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
